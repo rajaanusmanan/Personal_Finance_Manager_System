@@ -1,9 +1,9 @@
 -- ============================================================
--- FINANCE MANAGER DATABASE SCHEMA & QUERIES
+--              FINANCE MANAGER DATABASE SCHEMA & QUERIES
 -- ============================================================
 
 -- ============================================================
--- 1. CREATE DATABASE
+--                     1. CREATE DATABASE
 -- ============================================================
 CREATE DATABASE FinanceManager;
 GO
@@ -12,7 +12,7 @@ USE FinanceManager;
 GO
 
 -- ============================================================
--- 2. CREATE TABLES
+--                  2. CREATE TABLES
 -- ============================================================
 
 -- Users Table
@@ -139,92 +139,91 @@ GO
 -- ============================================================
 
 -- Query 1: Show All Users
--- SELECT * FROM Users;
+SELECT * FROM Users;
 
 -- Query 2: Show All Expenses
--- SELECT * FROM Expenses;
+SELECT * FROM Expenses;
 
 -- Query 3: Expenses with Category Names (JOIN)
--- SELECT
--- E.ExpenseID,
--- C.CategoryName,
--- E.Amount,
--- E.ExpenseDate,
--- E.Description
--- FROM Expenses E
--- JOIN Categories C ON E.CategoryID = C.CategoryID;
+-- 
+SELECT
+E.ExpenseID,
+ C.CategoryName,
+ E.Amount,
+ E.ExpenseDate,
+ E.Description
+ FROM Expenses E
+JOIN Categories C ON E.CategoryID = C.CategoryID;
 
 -- Query 4: Total Spending by Category
--- SELECT
--- C.CategoryName,
--- SUM(E.Amount) AS TotalSpent
--- FROM Expenses E
--- JOIN Categories C ON E.CategoryID = C.CategoryID
--- GROUP BY C.CategoryName;
+ SELECT
+-C.CategoryName,
+-SUM(E.Amount) AS TotalSpent
+ FROM Expenses E
+JOIN Categories C ON E.CategoryID = C.CategoryID
+ GROUP BY C.CategoryName;
 
 -- Query 5: Dashboard Total Spent
--- SELECT SUM(Amount) AS TotalSpent FROM Expenses;
+ SELECT SUM(Amount) AS TotalSpent FROM Expenses;
 
 -- Query 6: Budget Status (Spending vs Limit)
--- SELECT
--- C.CategoryName,
--- C.BudgetLimit,
--- ISNULL(SUM(E.Amount), 0) AS ActualSpent,
--- C.BudgetLimit - ISNULL(SUM(E.Amount), 0) AS RemainingBudget
--- FROM Categories C
--- LEFT JOIN Expenses E ON C.CategoryID = E.CategoryID
--- GROUP BY C.CategoryName, C.BudgetLimit;
+ SELECT
+ C.CategoryName,
+ C.BudgetLimit,
+- ISNULL(SUM(E.Amount), 0) AS ActualSpent,
+ C.BudgetLimit - ISNULL(SUM(E.Amount), 0) AS RemainingBudget
+ FROM Categories C
+LEFT JOIN Expenses E ON C.CategoryID = E.CategoryID
+ GROUP BY C.CategoryName, C.BudgetLimit;
 
--- Query 7: Most Spent Category
--- SELECT TOP 1
--- C.CategoryName,
--- SUM(E.Amount) AS TotalSpent
--- FROM Expenses E
--- JOIN Categories C ON E.CategoryID = C.CategoryID
--- GROUP BY C.CategoryName
--- ORDER BY TotalSpent DESC;
+ Query 7: Most Spent Category
+ SELECT TOP 1
+ C.CategoryName,
+ SUM(E.Amount) AS TotalSpent
+ FROM Expenses E
+JOIN Categories C ON E.CategoryID = C.CategoryID
+ GROUP BY C.CategoryName
+ ORDER BY TotalSpent DESC;
 
 -- Query 8: Least Spent Category
--- SELECT TOP 1
--- C.CategoryName,
--- SUM(E.Amount) AS TotalSpent
--- FROM Expenses E
--- JOIN Categories C ON E.CategoryID = C.CategoryID
--- GROUP BY C.CategoryName
--- ORDER BY TotalSpent ASC;
+ SELECT TOP 1
+ C.CategoryName,
+ SUM(E.Amount) AS TotalSpent
+ FROM Expenses E
+ JOIN Categories C ON E.CategoryID = C.CategoryID
+ GROUP BY C.CategoryName
+ ORDER BY TotalSpent ASC;
 
 -- Query 9: Monthly Spending Trend
--- SELECT
--- YEAR(ExpenseDate) AS Year,
--- MONTH(ExpenseDate) AS Month,
--- SUM(Amount) AS TotalSpent
--- FROM Expenses
--- GROUP BY YEAR(ExpenseDate), MONTH(ExpenseDate)
--- ORDER BY Year, Month;
+-SELECT
+ YEAR(ExpenseDate) AS Year,
+ MONTH(ExpenseDate) AS Month,
+ SUM(Amount) AS TotalSpent
+- FROM Expenses
+- GROUP BY YEAR(ExpenseDate), MONTH(ExpenseDate)
+- ORDER BY Year, Month;
 
 -- Query 10: Weekly Spending Analysis
--- SELECT
--- DATENAME(WEEKDAY, ExpenseDate) AS DayName,
--- SUM(Amount) AS TotalSpent
--- FROM Expenses
--- GROUP BY DATENAME(WEEKDAY, ExpenseDate);
+-SELECT
+ DATENAME(WEEKDAY, ExpenseDate) AS DayName,
+ SUM(Amount) AS TotalSpent
+ FROM Expenses
+ GROUP BY DATENAME(WEEKDAY, ExpenseDate);
 
--- Query 11: Trend Analysis (Month-over-Month)
+ Query 11: Trend Analysis (Month-over-Month)
 -- SELECT
--- MONTH(ExpenseDate) AS MonthNo,
--- SUM(Amount) AS MonthlyTotal,
--- LAG(SUM(Amount)) OVER (ORDER BY MONTH(ExpenseDate)) AS PreviousMonth
--- FROM Expenses
--- GROUP BY MONTH(ExpenseDate);
+ MONTH(ExpenseDate) AS MonthNo,
+ SUM(Amount) AS MonthlyTotal,
+ LAG(SUM(Amount)) OVER (ORDER BY MONTH(ExpenseDate)) AS PreviousMonth
+ FROM Expenses
+ GROUP BY MONTH(ExpenseDate);
+
 
 -- Query 12: Savings Goal Progress
--- SELECT
--- GoalName,
--- TargetAmount,
--- CurrentAmount,
--- (CurrentAmount * 100.0 / TargetAmount) AS ProgressPercent
--- FROM Savings_Goal;
+ SELECT
+ GoalName,
+ TargetAmount,
+ CurrentAmount,
+ (CurrentAmount * 100.0 / TargetAmount) AS ProgressPercent
+ FROM Savings_Goal;
 
--- ============================================================
--- END OF SCRIPT
--- ============================================================
